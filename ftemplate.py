@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
 
-from reportlab.lib.units import inch
+from reportlab.lib.units import inch, cm
 from reportlab.lib.colors import pink, green, brown, white, black
 from reportlab.lib.colors import Color
 from reportlab.pdfgen import canvas
@@ -51,6 +51,7 @@ def save_template(template, path):
         pickle.dump(template, f)
 
 
+# merges template with values
 class Form():
 
     def __init__(self, template, fields_values: dict):
@@ -65,10 +66,9 @@ class Form():
             color = Color(0, 0, 0, 0)
 
         canv.setFillColor(color)
-        canv.drawString(10, 10, "♥")
+        canv.drawString(10 * cm, 10 * cm, "♥")
         return canv
 
-    # merges template with values
     # returns marged pdf bytes
     def apply(self):
         # read template PDF data
@@ -115,7 +115,7 @@ class Form():
 
 class Template:
 
-    def __init__(self, name: str, fields: dict, pdf_data):
+    def __init__(self, name: str, fields: dict, pdf_data: bytes):
         # template name
         self.name = name
         # dict: {field_name: Field}
@@ -127,10 +127,10 @@ class Template:
 class Field(ABC):
 
     def __init__(self, x = 0, y = 0, page = 0):
-        # pos on page
+        # pos on page in cm
         # (0, 0) - bottom left
-        self.x = x
-        self.y = y
+        self.x = x * cm
+        self.y = y * cm
         # page, where it'll appear
         self.page = 0
 
@@ -148,52 +148,103 @@ class Field(ABC):
 
 class ImageField(Field):
 
-    def __init__(self, x, y, w, h, img, page = 0):
-        Field.__init__(srlf, x, y, page)
-        self.w = w
-        self.h = h
-        self.img = img
+    #x, y, w, h - image crop rect
+    def __init__(self, x, y, w, h, page=0):
+        Field.__init__(self, x, y, page)
+        self.w = w * cm
+        self.h = h * cm
 
+    # value - path to image
     def draw(self, canv, value):
+        img = ImageReader(value)
+
+        img_w, img_h = img.getSize()
+
+        #crop by min side
+        if self.w > self.h:
+            k = self.h / img_h
+        else:
+            k = self.w / img_w
+
+        width = img_w * k
+        height = img_h * k
+
+        #center align
+        cx = self.w / 2 - width / 2
+        cy = self.h / 2 - height / 2
+
+        canv.drawImage(img, self.x + cx, self.y + cy, width, height, mask='auto')
+
+        #debug
+        canv.setStrokeColor(green)
+        canv.roundRect(self.x, self.y, self.w, self.h, 4, stroke=1, fill=0)
+
         return canv
 
 
 class SelectField(ImageField):
 
-    def __init__(self, x, y, w, h):
-        img = ImageReader(os.path.join(IMAGES_DIR, "select.jpg"))
-        ImageField.__init__(self, x, y, w, h, img)
+    def __init__(self, x, y, size=1, page=0):
+        ImageField.__init__(self, x, y, size, size, page)
+
+    def draw(self, canv, value):
+        return super().draw(canv, os.path.join(IMAGES_DIR, "select.png"))
 
 
 class TextField(Field):
 
-    def __init__(self, x, y, text, page=0, font="Gardens", font_size=10):
+    def __init__(self, x, y, page=0, font="Gardens", font_size=10, color = black):
         Field.__init__(self, x, y, page)
-        self.text = text
         self.font = font
         self.font_size = font_size
+        self.color = color
 
     @abstractmethod
     def draw(self, canv, value):
+        #set text settings
+        canv.setFont(self.font, self.font_size)
+        canv.setFillColor(self.color)
+
         return canv
 
 class SimpleTextField(TextField):
 
     def draw(self, canv, value):
+        #sets text settings
+        canv = super().draw(canv, value)
+        #draw
+        canv.drawString(self.x, self.y, value.encode("utf-8"))
+
         return canv
 
 class BlockTextField(TextField):
 
-    def draw(sefl, canv, value):
+    def __init__(self, x, y, page=0, font="Gardens", font_size=10, color = black, block_width = 4):
+        TextField.__init__(self, x, y, page, font, font_size, color)
+        self.block_width = block_width
+
+    def draw(self, canv, value):
+        #sets text settings
+        canv = super().draw(canv, value)
+        #add gaps
+        value = (" " * self.block_width).join(list(value))
+        #draw
+        canv.drawString(self.x, self.y, value.encode("utf-8"))
+
         return canv
 
 
 if __name__ == '__main__':
+    #test
+    
     tmp_pdf_data = load_file("test.pdf")
 
     fields = {
-        "test_field_0": SimpleTextField(3, 4, "aaa"),
-        "test_field_1": SimpleTextField(10, 10, "bbb")
+        "test_field_0": SimpleTextField(x=1, y=1),
+        "test_field_1": SimpleTextField(x=10, y=10),
+        "test_field_2": BlockTextField(x=1, y=16, font_size=20),
+        "test_field_3": ImageField(x=6, y=16, w=10, h=6),
+        "test_field_4": SelectField(x=2, y=6, size=6),
     }
 
     temp = Template(name="zzz", fields=fields, pdf_data=tmp_pdf_data)
@@ -207,7 +258,10 @@ if __name__ == '__main__':
 
     values = {
         "test_field_0": "йцукенгшщз",
-        "test_field_1": "\( Ф _ Ф )/♥\( = з = )/"
+        "test_field_1": "\( Ф _ Ф )/♥\( = з = )/",
+        "test_field_2": "@@@@@@@@@@@@@@@@@",
+        "test_field_3": os.path.join(WORK_DIR, "unnamed.jpg"),
+        "test_field_4": None
     }
 
     form = Form(template=temp2, fields_values=values)
@@ -215,48 +269,3 @@ if __name__ == '__main__':
     out_pdf_data = form.apply()
 
     save_file(out_pdf_data, "tttttttttt.pdf")
-
-
-
-"""
-#packet = PdfFileReader("test.pdf")
-packet = io.BytesIO()
-# create a new PDF with Reportlab
-can = canvas.Canvas(packet, pagesize=letter)
-can.drawString(10, 10, "Hello world")
-
-logo = logo = ImageReader('sign.png')
-can.drawImage(logo, 10, 100, mask='auto')
-
-size = 7
-y = 2.3 * inch
-x = 1.3 * inch
-
-
-
-for line in ["ебанный рот", "этого казино", "блять"]:
-    can.setFont("Gardens", size)
-    can.setFillColor(pink)
-    can.drawRightString(x, y, "%s points: " % size)
-    can.drawString(x,y, line.encode("utf-8"))
-    y = y - size * 1.2
-    size = size + 1.5
-
-can.save()
-
-#move to the beginning of the StringIO buffer
-packet.seek(0)
-new_pdf = PdfFileReader(packet)
-# read your existing PDF
-existing_pdf = PdfFileReader(io.BytesIO(open("test.pdf", "rb").read()))
-output = PdfFileWriter()
-# add the "watermark" (which is the new pdf) on the existing page
-page = existing_pdf.getPage(0)
-page.mergePage(new_pdf.getPage(0))
-output.addPage(page)
-# finally, write "output" to a real file
-outputStream = open("destination.pdf", "wb")
-output.write(outputStream)
-outputStream.close()
-
-"""
