@@ -236,7 +236,7 @@ class BlockTextField(TextField):
 
 if __name__ == '__main__':
     #test
-    
+
     tmp_pdf_data = load_file("test.pdf")
 
     fields = {

@@ -1,58 +1,37 @@
-import json
+import sys
+from PyQt5.QtWidgets import *
 
+def dialog():
+    mbox = QMessageBox()
 
+    mbox.setText("-_-_-_-_-_-_")
+    mbox.setDetailedText(":v")
+    mbox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
 
+    mbox.exec_()
 
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    w = QWidget()
+    w.setWindowTitle(".✫*ﾟ･ﾟ｡.★.*｡･ﾟ✫*.[Form Editor].✫*ﾟ･ﾟ｡.★.*｡･ﾟ✫*.")
+    w.resize(300,300)
 
-class DataField:
-    def __init__(self):
-        self.x = 0
-        self.y = 0
+    label = QLabel("text text text")
+    #label.move(100,130)
+    label.show()
 
-    def set_pos(self, x, y):
-        self.x = x
-        self.y = y
+    line = QLineEdit()
+    line.show()
 
-    def draw(self, canv):
-        pass
+    btn = QPushButton('?')
+    btn.show()
+    btn.clicked.connect(dialog)
 
-class BlockField(DataField):
-    pass
+    vb = QVBoxLayout(w)
 
-class StraightField(DataField):
-    pass
+    vb.addWidget(label)
+    vb.addWidget(line)
+    vb.addWidget(btn)
 
-class ImageField(DataField):
-    pass
-
-class BoolField(BlockField):
-    pass
-
-class TextField(StraightField):
-    pass
-
-class DateField(StraightField):
-    pass
-
-class BlockTextField(BlockField):
-    pass
-
-class BlockTextField(BlockField):
-    pass
-
-class Template:
-    def __init__(self, name: str, data: dict, images: list):
-        self.name = name
-        self.data = data
-        self.images = images
-
-    def save_to_file(template, path):
-        template_data = template.__dict__()
-        with open(path, "w", encoding="UTF-8") as file:
-            json.dump(template_data, file)
-
-    def load_from_file(path):
-        with open(path, "r", encoding="UTF-8") as json_file:
-            template_data = json.load(json_file)
-        tmp = Template(template_data["name"], template_data["data"], template_data["images"])
-        return tmp
+    w.show()
+    sys.exit(app.exec_())
