@@ -54,7 +54,7 @@ endobj
 /ColorSpace <<
 /pgfprgb [ /Pattern /DeviceRGB ]
 >>
-/ProcSet [ /ImageI /ImageB /PDF /ImageC /Text ]
+/ProcSet [ /Text /ImageI /PDF /ImageC /ImageB ]
 >>
 /MediaBox [ 0 0 592.777 837.858 ]
 /Parent 1 0 R
@@ -96,7 +96,7 @@ endobj
 /ColorSpace <<
 /pgfprgb [ /Pattern /DeviceRGB ]
 >>
-/ProcSet [ /ImageI /ImageB /PDF /ImageC /Text ]
+/ProcSet [ /Text /ImageI /PDF /ImageC /ImageB ]
 >>
 /MediaBox [ 0 0 592.777 837.858 ]
 /Parent 1 0 R

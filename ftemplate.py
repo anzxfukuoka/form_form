@@ -1,3 +1,7 @@
+#
+# Классы для работы с шаблонами
+#
+
 import sys
 import io
 import os
@@ -15,18 +19,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
 import pickle
+from vars import WORK_DIR, RES_DIR, TEMPLATES_DIR, FONTS_DIR, IMAGES_DIR, EXT
 
-# Paths
-WORK_DIR = os.getcwd();
-
-RES_DIR = os.path.join(WORK_DIR, "resources/")
-TEMPLATES_DIR = os.path.join(WORK_DIR, "templates/")
-
-FONTS_DIR = os.path.join(RES_DIR, "fonts/")
-IMAGES_DIR = os.path.join(RES_DIR, "img/")
-
-#file end
-EXT = ".tmplz"
 
 # load fonts
 pdfmetrics.registerFont(TTFont('Gardens', os.path.join(FONTS_DIR, "Gardens CM Regular.ttf")))
@@ -129,7 +123,7 @@ class Template:
     def __repr__(self):
         return "Template: {}\n{}".format(self.name, self.fields)
 
-
+# abstract field
 class Field(ABC):
 
     def __init__(self, x = 0, y = 0, page = 0):

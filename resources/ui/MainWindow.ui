@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Form Editor</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="verticalLayoutWidget">
@@ -71,28 +71,22 @@
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menuSave">
-     <property name="title">
-      <string>Save</string>
-     </property>
-     <addaction name="separator"/>
-    </widget>
-    <addaction name="menuSave"/>
+    <addaction name="actionSave"/>
     <addaction name="separator"/>
-    <addaction name="actionExit_2"/>
+    <addaction name="actionExit_Main"/>
    </widget>
    <widget class="QMenu" name="menuTemplate">
     <property name="title">
      <string>Template</string>
     </property>
-    <addaction name="actionLoad_Data"/>
+    <addaction name="actionOpen_Template_Manager"/>
    </widget>
    <widget class="QMenu" name="menuFields">
     <property name="title">
-     <string>Fields</string>
+     <string>Data</string>
     </property>
     <addaction name="actionClear"/>
-    <addaction name="actionLoad_Data_2"/>
+    <addaction name="actionLoad_Data"/>
     <addaction name="actionSave_Data"/>
    </widget>
    <addaction name="menuFile"/>
@@ -115,7 +109,7 @@
     <string>Exit</string>
    </property>
   </action>
-  <action name="actionLoad_Data">
+  <action name="actionOpen_Template_Manager">
    <property name="text">
     <string>Open Template Manager</string>
    </property>
@@ -130,12 +124,12 @@
     <string>Load Fields Data</string>
    </property>
   </action>
-  <action name="actionExit_2">
+  <action name="actionExit_Main">
    <property name="text">
     <string>Exit</string>
    </property>
   </action>
-  <action name="actionLoad_Data_2">
+  <action name="actionLoad_Data">
    <property name="text">
     <string>Load</string>
    </property>
@@ -148,6 +142,11 @@
   <action name="actionClear">
    <property name="text">
     <string>Clear</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>
