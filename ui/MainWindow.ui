@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>49</y>
+      <width>581</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="FieldsList"/>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Template:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="templateName">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>20</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuSave">
+     <property name="title">
+      <string>Save</string>
+     </property>
+     <addaction name="separator"/>
+    </widget>
+    <addaction name="menuSave"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit_2"/>
+   </widget>
+   <widget class="QMenu" name="menuTemplate">
+    <property name="title">
+     <string>Template</string>
+    </property>
+    <addaction name="actionLoad_Data"/>
+   </widget>
+   <widget class="QMenu" name="menuFields">
+    <property name="title">
+     <string>Fields</string>
+    </property>
+    <addaction name="actionClear"/>
+    <addaction name="actionLoad_Data_2"/>
+    <addaction name="actionSave_Data"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuTemplate"/>
+   <addaction name="menuFields"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLoad_Template_2">
+   <property name="text">
+    <string>Load Template</string>
+   </property>
+  </action>
+  <action name="actionCreate_Template">
+   <property name="text">
+    <string>Create Template</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionLoad_Data">
+   <property name="text">
+    <string>Open Template Manager</string>
+   </property>
+  </action>
+  <action name="actionSave_Fields_Data">
+   <property name="text">
+    <string>Save Fields Data</string>
+   </property>
+  </action>
+  <action name="actionLoad_Fields_Data">
+   <property name="text">
+    <string>Load Fields Data</string>
+   </property>
+  </action>
+  <action name="actionExit_2">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionLoad_Data_2">
+   <property name="text">
+    <string>Load</string>
+   </property>
+  </action>
+  <action name="actionSave_Data">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="text">
+    <string>Clear</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,1 @@
+venv\Lib\site-packages\pyqt5_tools\designer.exe

@@ -25,6 +25,9 @@ TEMPLATES_DIR = os.path.join(WORK_DIR, "templates/")
 FONTS_DIR = os.path.join(RES_DIR, "fonts/")
 IMAGES_DIR = os.path.join(RES_DIR, "img/")
 
+#file end
+EXT = ".tmplz"
+
 # load fonts
 pdfmetrics.registerFont(TTFont('Gardens', os.path.join(FONTS_DIR, "Gardens CM Regular.ttf")))
 
@@ -122,6 +125,9 @@ class Template:
         self.fields = fields
         # pdf bytes
         self.pdf_data = pdf_data
+
+    def __repr__(self):
+        return "Template: {}\n{}".format(self.name, self.fields)
 
 
 class Field(ABC):
@@ -247,10 +253,10 @@ if __name__ == '__main__':
         "test_field_4": SelectField(x=2, y=6, size=6),
     }
 
-    temp = Template(name="zzz", fields=fields, pdf_data=tmp_pdf_data)
-    save_template(temp, os.path.join(TEMPLATES_DIR, "xxx.tmplz"))
+    temp = Template(name="testtets", fields=fields, pdf_data=tmp_pdf_data)
+    save_template(temp, os.path.join(TEMPLATES_DIR, "0xxx.tmplz"))
 
-    temp2 = load_teplate(os.path.join(TEMPLATES_DIR, "xxx.tmplz"))
+    temp2 = load_teplate(os.path.join(TEMPLATES_DIR, "0xxx.tmplz"))
 
     print(temp2.name)
     print(temp2.fields)
